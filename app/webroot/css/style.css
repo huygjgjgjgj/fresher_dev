@@ -1,0 +1,19 @@
+*{
+	margin: 0px;
+	padding: 0px;
+}
+
+.form{
+	width: 500px;
+	margin: 30px auto;
+	border: 1px solid #eeebeb;
+	padding: 20px;
+	border-radius: 9px;
+	background-image: url(../img/blue.jpg) ;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+.form-group a {
+	color: #9E2424 !important;
+}

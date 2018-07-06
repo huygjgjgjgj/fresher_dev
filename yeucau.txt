@@ -1,0 +1,71 @@
+bảng accounts.
+Lưu thông tin tài khoản.
+role: I là cá nhân / R là tổ chức
+status = 0 . tạm ngừng = 1 là hoạt động
+pass lưu dạng md5.
+
+Bảng orders
+account_id liên kết với bảng accounts.id
+
+order_code : mã đơn hàng
+total : số tiền
+created_date : ngày tạo
+
+
+Bảng orderdetails
+order_id liên kết với bảng orders qua orders.id
+product_name : tên sản phẩm
+amount: số tiền của sản phẩm
+quantity : số lượng
+status : trạng thái = 0 / disable / 1 enable
+---------------------------------------------
+1.
+. Tạo 1 màn hình login 
+Gồm textbox username
+Textbox pasword
+button submit
+
+Yêu cầu. điền thông tin user, pass. check trong db tồn tại thì lưu session và redirect ra trang show đơn hàng
+
+------------------------------------------
+2. Trang show đơn hàng
+Gồm
+STT | order_code | product_name | amount | quantity | status  | thao tác
+1     aaa222          sanpham1      200       1         disable    sửa
+2     bbbbccc22       sanpham2      300        2        enable     sửa
+
+Nếu tài khoản có role bằng "R" thì có quyền thay đổi status 
+
+3. Nếu tài khoản có role bằng R thì sẽ có 1 trang tạo sản phẩm
+Gồm có 
+1 . Tên sản phẩm  textbox [tên sản phẩm từ 5 ký tự trở lên bao gồm ít nhất 2 ký tự số]
+2. Số tiền textbox [số tiền >0 nguyên dương bé hơn 1 tỷ]
+3. Số lượng textbox [Số lượng nguyên dương từ 1-100]
+4. Mã đơn hàng [mã đơn hàng gồm 6 ký tự bao gồm ký tự chữ và số]
+5. Thêm mới button . Khi click thêm mới. thì validate các textbox trên.
+Khi validate đã xử lý ok. tiến hành lưu dữ liệu
+vào database. cụ thể. bảng orders và order_details
+các trường tương ứng
+
+---------------------------
+3. Màn hình edit sản phẩm
+chỉ tài khoản có role = R mới edit được sản phẩm.
+Khi click edit sản phẩm.
+thì show ra. lấy dữ liệu tương ứng của sản phẩm đổ ra 
+
+1 . Tên sản phẩm  textbox [tên sản phẩm từ 5 ký tự trở lên bao gồm ít nhất 2 ký tự số]
+2. Số tiền textbox [số tiền >0 nguyên dương bé hơn 1 tỷ]
+3. Số lượng textbox [Số lượng nguyên dương từ 1-100]
+4. Mã đơn hàng [mã đơn hàng gồm 6 ký tự bao gồm ký tự chữ và số]
+5. Edit button . Khi click thêm mới. thì validate các textbox trên.
+Khi validate đã xử lý ok. tiến hành lưu dữ liệu
+vào database. cụ thể. bảng orders và order_details
+
+
+
+
+
+
+
+
+
