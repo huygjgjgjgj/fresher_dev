@@ -11,21 +11,28 @@ class OrdersController extends AppController
 {
     public $components = array('session');
     var $helpers = array("Html");
+    public $uses = array('Order','OrderDetail');
 
     public function showOrder(){
         if($this->Session->check("session")) {//kiểm tra có session hay không
-            $username = $this->Session->read('session');
-            $order = $this->Order->showorder();
-//        echo "<pre>";print_r($order);die;
-            $this->set('orders', $order);
-            $this->set("name", $username);
+            $session = $this->Session->read('session');
+            foreach ($session as $sess){
+                $session_id = $sess['Account']['id'];
+                $session_username = $sess['Account']['username'];
+                $this->set('name',$session_username);
+
+                $order = $this->Order->find('all', array(
+                    'order' => array('created_date' => 'asc'),
+                    'fields' => array('Account.username','Order.order_code'),
+                    'conditions' => array('account_id' => $session_id)
+                ));
+//            echo "<pre>";print_r($order);die;
+                $this->set('orders', $order);
+            }
         }else{
             $this->redirect(array('controller' => 'accounts','action' => 'index'));
         }
-
-        $order = $this->Order->showorder();
-//        echo "<pre>";print_r($order);die;
-        $this->set('orders', $order);
+        $this->addOrder();
     }
 
     public function logout(){
@@ -34,14 +41,43 @@ class OrdersController extends AppController
     }
 
     public function addOrder(){
+        $data = array();
+        $errors = array();
+
         if ($this->request->is('post')) {
             $data = $this->request->data;
-            echo "<pre>";print_r($data);die;
+
+            $this->Order->set($data['Order']);
+            if(!$this->Order->validates()){
+                $errors['Order'] = $this->Order->validationErrors;
+            }
+
+            $this->OrderDetail->set($data['OrderDetail']);
+            if(!$this->OrderDetail->validates()){
+                $errors['OrderDetail'] = $this->OrderDetail->validationErrors;
+            }
+            if(empty($errors)) {
+                if ($this->Session->check('session')) {
+                    $session = $this->Session->read('session');
+                    foreach ($session as $sess) {
+                        $data['Order']['account_id'] = $sess['Account']['id'];
+                        $this->Order->save($data['Order']);
+                        $order = $this->Order->find('first',array('order' => array('Order.id' => 'desc')));
+                        $data['OrderDetail']['order_id'] = $order['Order']['id'];
+                        $this->OrderDetail->save($data['OrderDetail']);
+
+                        return $this->redirect('/');
+                    }
+                }
+            }else{
+
+            }
         }
+        $this->set(compact('data','errors'));
     }
 
     public function editOrder(){
-        
+
     }
 
     public function delOrder(){

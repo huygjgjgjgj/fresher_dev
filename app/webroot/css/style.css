@@ -17,3 +17,15 @@
 .form-group a {
 	color: #9E2424 !important;
 }
+
+span{
+    color : #9E2424 !important;
+}
+
+.addOrder {
+    display: none;
+}
+
+.addOrder.active {
+    display:block;
+}

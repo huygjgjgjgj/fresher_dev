@@ -9,21 +9,25 @@ App::uses('AppModel', 'Model');
 
 class Order extends AppModel
 {
-    public $name = 'orders';
+    public $useTable = 'orders';
+
+    public $validate = array(
+        'order_code' => array(
+            'rule1' => array(
+                'rule' => 'notBlank',
+                'message' => 'Mã đơn hàng ko được để trống'
+            ),
+            'rule2' => array(
+                'rule' => '/^[a-z0-9]{6,6}$/i',
+                'message' => 'Mã đơn hàng gồm 6 ký tự và ko có ký tự đặc biệt'
+            ),
+        )
+    );
 
     public $hasMany = array(
         'Order_detail' => array(
             'className' => 'Order_detail',
             'foreignKey' => 'order_id',
-            'dependent' => false,
-            'conditions' => '',
-            'fields' => '',
-            'order' => '',
-            'limit' => '',
-            'offset' => '',
-            'exclusive' => '',
-            'finderQuery' => '',
-            'counterQuery' => ''
         )
     );
 
@@ -33,19 +37,4 @@ class Order extends AppModel
             'foreignKey' => 'account_id'
         )
     );
-
-    public function showorder(){
-        return $this->find('all',array(
-            'fields' => array('order_code'),
-            'order' => array('created_date' => 'asc'),
-            'contain'=> array(
-                'Order_detail'=>array(
-                    'id','product_name', 'amount', 'quantity', 'status ',
-                ),
-                'Account' => array(
-                    'id','role'
-                )
-            )
-        ));
-    }
 }

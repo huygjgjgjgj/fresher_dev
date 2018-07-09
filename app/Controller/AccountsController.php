@@ -17,8 +17,16 @@ class AccountsController extends AppController {
             $password = $this->request->data('password');
             $password = md5($password);
 
-            if($this->Account->checkLogin($username,$password)) {
-                $this->Session->write("session", $username);
+            $Account = $this->Account->checkLogin($username,$password);
+
+            if($Account) {
+//                foreach ($Account as $ac){
+//                    $id = $ac['Account']['id'];
+//                    $username = $ac['Account']['username'];
+//                    $this->Session->write("session_id", $id);
+//                    $this->Session->write("session_username", $username);
+//                }
+                $this->Session->write('session',$Account);
                 $this->redirect("/");
             }else{
                 $error = "Tên đăng nhập và mật khẩu không đúng";

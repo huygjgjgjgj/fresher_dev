@@ -7,7 +7,7 @@ App::uses('AppModel', 'Model');
  */
 class Account extends AppModel {
 
-    public $name = 'accounts';
+    public $useTable = 'accounts';
     function checklogin($username, $password){
         return $this->find('all',array('conditions' => array('username'=>$username, 'password'=>$password)));
     }
